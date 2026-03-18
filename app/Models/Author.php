@@ -94,7 +94,7 @@ class Author extends Model
     }
 
     /**
-     * Modificación del valor de un atributo de mi tabla.
+     * Modificación del valor de un atributo de mi modelo.
      * El nombre de la función debe coincidir con el nombre del campo en la tabla
      */
     protected function name(): Attribute

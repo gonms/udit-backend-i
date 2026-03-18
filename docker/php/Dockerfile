@@ -33,6 +33,12 @@ RUN apt-get update && apt-get install -y \
         soap \
         opcache
 
+RUN apt-get update && apt-get install -y \
+    libssl-dev \
+    pkg-config \
+    && pecl install mongodb \
+    && docker-php-ext-enable mongodb
+
 # Install Redis extension
 RUN pecl install redis-6.1.0 && docker-php-ext-enable redis
 

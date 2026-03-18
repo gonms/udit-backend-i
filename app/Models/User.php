@@ -4,7 +4,6 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -45,5 +44,26 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Relaciones M:N con nombre personalizado (reservas) y con acceso a campos de la tabla intermedia (pivot)
+     */
+    public function books()
+    {
+        return $this->belongsToMany(Book::class)
+        ->as('reservas')
+        ->withPivot(['reserved_at', 'returned_at']);
+    }
+
+    /**
+     * Funciones basadas en relaciones filtradas por un campo de la tabla intermedia (pivot)
+     */
+    public function reservasActivas() {
+        return $this->books()->wherePivotNull('returned_at');
+    }
+
+    public function reservasDevueltas() {
+        return $this->books()->wherePivotNotNull('returned_at');
     }
 }
