@@ -6,6 +6,7 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class BookController extends Controller
 {
@@ -14,6 +15,34 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
+        /**
+         * Obtiene el valor de una variable de caché
+         */
+        $books = Cache::get('books');
+        if (!Cache::has('books')) {
+            $books = Book::all();
+
+            /**
+             * Establece una variable de caché para un tiempo determinado en segundos
+             */
+            Cache::set('books', $books, 3600);
+            Cache::put('books', $books, 3600);
+        }
+
+        /**
+         * Borra el valor de una caché
+         */
+        Cache::forget('books');
+
+        /** 
+         * Intenta obtener el valor de la variable de caché y si no está presente, crea la variable para el tiempo definido
+         */
+        $books = Cache::remember('books', 3600, function() {
+            return $books = Book::all();
+        });
+
+
+
         /* Listado de registros en el front
 
         $query = Book::query();

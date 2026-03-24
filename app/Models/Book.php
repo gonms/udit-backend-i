@@ -80,4 +80,52 @@ class Book extends Model
             }
         );
     }
+
+    /** 
+     * Disparadores en función de la operación sobre mi registro en el modelo
+     * Se ejecuta o bien antes de persistir el dato o después
+     * 
+     * Para evitar disparar estos eventos al crear, modificar o eliminar un registro, usar las funciones xxxQuietly():
+     * $model->saveQuietly(), $model->updateQuietly(), $model->deleteQuietly()
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        /**
+         * Eventos al crear un nuevo registro
+         */
+        static::creating(function(Book $book) {
+            //Se ejecuta antes de persistir el registro sobre la tabla
+            
+        });
+        static::created(function(Book $book) {
+            //Se ejecuta después de persistir el registro sobre la tabla
+
+        });
+
+        /**
+         * Eventos al actualizar un registro, ya sea uno nuevo o uno existente en la base de datos
+         */
+        static::saving(function(Book $book) {
+            //Se ejecuta antes de persistir el registro sobre la tabla
+
+        });
+        static::saved(function(Book $book) {
+            //Se ejecuta después de persistir el registro sobre la tabla
+
+        });
+
+        /**
+         * Eventos al borrar un registro
+         */
+        static::deleting(function(Book $book) {
+            //Se ejecuta antes de persistir el registro sobre la tabla
+
+        });
+        static::deleted(function(Book $book) {
+            //Se ejecuta después de persistir el registro sobre la tabla
+
+        });
+    }
 }
